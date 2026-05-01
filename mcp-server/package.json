@@ -1,0 +1,25 @@
+{
+  "name": "repo-rescue-room-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server for Repo Rescue Room",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "repo-rescue-room-mcp": "./src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "repo-rescue-room"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

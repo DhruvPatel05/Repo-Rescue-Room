@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "repo-rescue-room": {
+      "command": "node",
+      "args": [
+        "/ABSOLUTE/PATH/TO/Repo-Rescue-Room/mcp-server/src/index.js"
+      ]
+    }
+  }
+}
