@@ -1,0 +1,26 @@
+{
+  "name": "repo-rescue-room-server",
+  "version": "1.0.0",
+  "description": "Backend API for Repo Rescue Room - Repository issue detection engine",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": [
+    "github",
+    "repository",
+    "analysis",
+    "security",
+    "code-quality"
+  ],
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
