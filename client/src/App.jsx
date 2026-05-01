@@ -1,122 +1,206 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from 'react';
+import RescueDashboard from './components/RescueDashboard';
+import RescuePlan from './components/RescuePlan';
+import CodeFix from './components/CodeFix';
+import BobChat from './components/BobChat';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [repoUrl, setRepoUrl] = useState('');
+  const [isScanning, setIsScanning] = useState(false);
+  const [hasScanned, setHasScanned] = useState(false);
+  const [selectedIssue, setSelectedIssue] = useState(null);
+  const [healthScore, setHealthScore] = useState(45);
+  
+  const handleScan = (e) => {
+    e.preventDefault();
+    if (!repoUrl.trim()) return;
+    
+    setIsScanning(true);
+    
+    // Simulate scanning
+    setTimeout(() => {
+      setIsScanning(false);
+      setHasScanned(true);
+    }, 2500);
+  };
+  
+  const handleFixIssue = (issue) => {
+    setSelectedIssue(issue);
+  };
+  
+  const handleApplyFix = (issue) => {
+    // Mark issue as resolved
+    setSelectedIssue(null);
+    // Update health score
+    setHealthScore(prev => Math.min(100, prev + 5));
+  };
+  
+  const handleCloseCodeFix = () => {
+    setSelectedIssue(null);
+  };
+  
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
+    <div className="app">
+      {!hasScanned ? (
+        <div className="landing-page">
+          <div className="landing-content">
+            <div className="hero-section">
+              <div className="hero-badge">
+                <svg className="icon" role="presentation" aria-hidden="true">
+                  <use href="/icons.svg#code-icon"></use>
+                </svg>
+                <span>Powered by Bob AI</span>
+              </div>
+              
+              <h1 className="hero-title">
+                Repo Rescue Room
+              </h1>
+              
+              <p className="hero-subtitle">
+                AI-powered repository analysis and automated fixes for your codebase
+              </p>
+              
+              <form className="url-input-form" onSubmit={handleScan}>
+                <div className="input-wrapper">
+                  <svg className="input-icon" role="presentation" aria-hidden="true">
+                    <use href="/icons.svg#github-icon"></use>
+                  </svg>
+                  <input
+                    type="text"
+                    className="url-input"
+                    placeholder="Enter repository URL (e.g., https://github.com/user/repo)"
+                    value={repoUrl}
+                    onChange={(e) => setRepoUrl(e.target.value)}
+                    disabled={isScanning}
+                  />
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className={`scan-button ${isScanning ? 'scanning' : ''}`}
+                  disabled={isScanning || !repoUrl.trim()}
                 >
+                  {isScanning ? (
+                    <>
+                      <span className="spinner"></span>
+                      Scanning Repository...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="icon" role="presentation" aria-hidden="true">
+                        <use href="/icons.svg#activity-icon"></use>
+                      </svg>
+                      Start Rescue
+                    </>
+                  )}
+                </button>
+              </form>
+              
+              <div className="features-grid">
+                <div className="feature-card">
+                  <div className="feature-icon critical">
+                    <svg className="icon" role="presentation" aria-hidden="true">
+                      <use href="/icons.svg#alert-triangle-icon"></use>
+                    </svg>
+                  </div>
+                  <h3>Detect Issues</h3>
+                  <p>Identify security vulnerabilities, bugs, and code quality issues</p>
+                </div>
+                
+                <div className="feature-card">
+                  <div className="feature-icon success">
+                    <svg className="icon" role="presentation" aria-hidden="true">
+                      <use href="/icons.svg#code-icon"></use>
+                    </svg>
+                  </div>
+                  <h3>Auto-Fix Code</h3>
+                  <p>Bob AI generates fixes with detailed explanations</p>
+                </div>
+                
+                <div className="feature-card">
+                  <div className="feature-icon info">
+                    <svg className="icon" role="presentation" aria-hidden="true">
+                      <use href="/icons.svg#activity-icon"></use>
+                    </svg>
+                  </div>
+                  <h3>Track Progress</h3>
+                  <p>Monitor repository health and fix completion in real-time</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="dashboard-layout">
+          <header className="app-header">
+            <div className="header-content">
+              <div className="logo">
+                <svg className="icon" role="presentation" aria-hidden="true">
+                  <use href="/icons.svg#code-icon"></use>
+                </svg>
+                <span>Repo Rescue Room</span>
+              </div>
+              
+              <div className="repo-info">
+                <svg className="icon" role="presentation" aria-hidden="true">
                   <use href="/icons.svg#github-icon"></use>
                 </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
+                <span className="repo-url">{repoUrl}</span>
+              </div>
+              
+              <button 
+                className="new-scan-button"
+                onClick={() => {
+                  setHasScanned(false);
+                  setRepoUrl('');
+                  setSelectedIssue(null);
+                  setHealthScore(45);
+                }}
+              >
+                <svg className="icon" role="presentation" aria-hidden="true">
+                  <use href="/icons.svg#activity-icon"></use>
                 </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+                New Scan
+              </button>
+            </div>
+          </header>
+          
+          <main className="app-main">
+            <section className="dashboard-section">
+              <RescueDashboard 
+                healthScore={healthScore}
+                issues={{
+                  critical: 3,
+                  high: 7,
+                  medium: 12,
+                  low: 8,
+                }}
+              />
+            </section>
+            
+            <section className="plan-section">
+              <RescuePlan onFixIssue={handleFixIssue} />
+            </section>
+            
+            {selectedIssue && (
+              <section className="codefix-section">
+                <CodeFix 
+                  issue={selectedIssue}
+                  onApplyFix={handleApplyFix}
+                  onClose={handleCloseCodeFix}
+                />
+              </section>
+            )}
+          </main>
         </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      )}
+      
+      <BobChat />
+    </div>
+  );
 }
 
-export default App
+export default App;
+
+// Made with Bob
