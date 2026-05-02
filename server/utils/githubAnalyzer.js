@@ -1,4 +1,8 @@
 import { Octokit } from '@octokit/rest';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
 
 /**
  * GitHub Repository Analyzer
@@ -6,8 +10,12 @@ import { Octokit } from '@octokit/rest';
  */
 
 const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN || undefined
+  auth: process.env.GITHUB_TOKEN
 });
+
+// Log token status on module load
+console.log('🔧 GitHub Analyzer initialized');
+console.log(`🔑 Token loaded: ${process.env.GITHUB_TOKEN ? 'Yes (' + process.env.GITHUB_TOKEN.substring(0, 10) + '...)' : 'No'}`);
 
 /**
  * Analyze a GitHub repository
@@ -271,7 +279,12 @@ async function checkMissingFiles(owner, repo, startId) {
  */
 export async function getRepositoryInfo(owner, repo) {
   try {
+    console.log(`🔍 Fetching repository info for: ${owner}/${repo}`);
+    console.log(`🔑 GitHub token configured: ${process.env.GITHUB_TOKEN ? 'Yes' : 'No'}`);
+    
     const { data } = await octokit.repos.get({ owner, repo });
+    
+    console.log(`✅ Repository found: ${data.full_name}`);
     return {
       name: data.name,
       fullName: data.full_name,
@@ -282,7 +295,9 @@ export async function getRepositoryInfo(owner, repo) {
       updatedAt: data.updated_at
     };
   } catch (error) {
-    console.error('Error getting repository info:', error.message);
+    console.error('❌ Error getting repository info:', error.message);
+    console.error('Error status:', error.status);
+    console.error('Error details:', error.response?.data || 'No additional details');
     throw error;
   }
 }

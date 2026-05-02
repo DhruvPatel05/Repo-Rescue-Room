@@ -59,10 +59,60 @@ function App() {
   };
   
   const handleApplyFix = (issue) => {
+    console.log('Applying fix for issue:', issue);
+    
     // Mark issue as resolved
     setSelectedIssue(null);
-    // Update health score
-    setHealthScore(prev => Math.min(100, prev + 5));
+    
+    // Update scan data to remove the fixed issue
+    if (scanData) {
+      // Find and remove the issue by id, title, or file+type combination
+      const updatedIssues = scanData.issues.filter(i => {
+        if (issue.id && i.id === issue.id) return false;
+        if (issue.title && i.title === issue.title) return false;
+        if (issue.file && issue.type && i.file === issue.file && i.type === issue.type) return false;
+        return true;
+      });
+      
+      const updatedSummary = {
+        critical: updatedIssues.filter(i => i.severity === 'critical').length,
+        high: updatedIssues.filter(i => i.severity === 'high').length,
+        medium: updatedIssues.filter(i => i.severity === 'medium').length,
+        low: updatedIssues.filter(i => i.severity === 'low').length
+      };
+      
+      // Recalculate health score
+      const newHealthScore = Math.max(0, 100 - (
+        updatedSummary.critical * 25 +
+        updatedSummary.high * 15 +
+        updatedSummary.medium * 8 +
+        updatedSummary.low * 3
+      ));
+      
+      console.log('Updated summary:', updatedSummary);
+      console.log('New health score:', newHealthScore);
+      
+      setScanData({
+        ...scanData,
+        issues: updatedIssues,
+        summary: updatedSummary,
+        totalIssues: updatedIssues.length
+      });
+      setHealthScore(newHealthScore);
+      
+      // Update rescue plan to remove the fixed issue
+      if (rescuePlan) {
+        const updatedPlan = rescuePlan.filter(item => {
+          if (issue.id && item.id === issue.id) return false;
+          if (issue.priority && item.priority === issue.priority) return false;
+          if (issue.title && item.title === issue.title) return false;
+          if (issue.file && issue.type && item.file === issue.file && item.type === issue.type) return false;
+          return true;
+        });
+        console.log('Updated rescue plan length:', updatedPlan.length);
+        setRescuePlan(updatedPlan);
+      }
+    }
     
     // Show success toast
     setToast({
@@ -72,10 +122,60 @@ function App() {
   };
   
   const handleCommitFix = (issue) => {
+    console.log('Committing fix for issue:', issue);
+    
     // Close the code fix panel
     setSelectedIssue(null);
-    // Update health score
-    setHealthScore(prev => Math.min(100, prev + 5));
+    
+    // Update scan data to remove the fixed issue
+    if (scanData) {
+      // Find and remove the issue by id, title, or file+type combination
+      const updatedIssues = scanData.issues.filter(i => {
+        if (issue.id && i.id === issue.id) return false;
+        if (issue.title && i.title === issue.title) return false;
+        if (issue.file && issue.type && i.file === issue.file && i.type === issue.type) return false;
+        return true;
+      });
+      
+      const updatedSummary = {
+        critical: updatedIssues.filter(i => i.severity === 'critical').length,
+        high: updatedIssues.filter(i => i.severity === 'high').length,
+        medium: updatedIssues.filter(i => i.severity === 'medium').length,
+        low: updatedIssues.filter(i => i.severity === 'low').length
+      };
+      
+      // Recalculate health score
+      const newHealthScore = Math.max(0, 100 - (
+        updatedSummary.critical * 25 +
+        updatedSummary.high * 15 +
+        updatedSummary.medium * 8 +
+        updatedSummary.low * 3
+      ));
+      
+      console.log('Updated summary:', updatedSummary);
+      console.log('New health score:', newHealthScore);
+      
+      setScanData({
+        ...scanData,
+        issues: updatedIssues,
+        summary: updatedSummary,
+        totalIssues: updatedIssues.length
+      });
+      setHealthScore(newHealthScore);
+      
+      // Update rescue plan to remove the fixed issue
+      if (rescuePlan) {
+        const updatedPlan = rescuePlan.filter(item => {
+          if (issue.id && item.id === issue.id) return false;
+          if (issue.priority && item.priority === issue.priority) return false;
+          if (issue.title && item.title === issue.title) return false;
+          if (issue.file && issue.type && item.file === issue.file && item.type === issue.type) return false;
+          return true;
+        });
+        console.log('Updated rescue plan length:', updatedPlan.length);
+        setRescuePlan(updatedPlan);
+      }
+    }
     
     // Show commit success toast
     setToast({

@@ -19,18 +19,25 @@ router.post('/', async (req, res) => {
   try {
     const { url } = req.body;
 
+    console.log('📥 Received scan request:', { url });
+
     if (!url) {
       return res.status(400).json({ error: 'Repository URL is required' });
     }
 
-    // Validate GitHub URL format
-    const githubUrlPattern = /^https:\/\/github\.com\/[\w-]+\/[\w.-]+\/?$/;
-    if (!githubUrlPattern.test(url)) {
-      return res.status(400).json({ error: 'Invalid GitHub repository URL' });
+    // Validate GitHub URL format - more flexible pattern
+    const githubUrlPattern = /^https?:\/\/(www\.)?github\.com\/[\w-]+\/[\w.-]+\/?$/;
+    if (!githubUrlPattern.test(url.trim())) {
+      console.log('❌ Invalid URL format:', url);
+      return res.status(400).json({
+        error: 'Invalid GitHub repository URL',
+        hint: 'Expected format: https://github.com/owner/repo'
+      });
     }
 
     // Extract owner and repo from URL
-    const urlParts = url.replace('https://github.com/', '').replace(/\/$/, '').split('/');
+    const cleanUrl = url.trim().replace(/\/$/, '');
+    const urlParts = cleanUrl.replace(/^https?:\/\/(www\.)?github\.com\//, '').split('/');
     const [owner, repo] = urlParts;
 
     console.log(`🔍 Scanning repository: ${owner}/${repo}`);

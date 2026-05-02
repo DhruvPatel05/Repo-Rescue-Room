@@ -30,7 +30,8 @@ function CodeFix({ issue, onApplyFix, onClose, onCommitFix }) {
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     if (onApplyFix) {
-      onApplyFix(currentIssue);
+      // Pass the original issue object which has the id
+      onApplyFix(issue);
     }
     
     setIsApplying(false);
@@ -43,7 +44,8 @@ function CodeFix({ issue, onApplyFix, onClose, onCommitFix }) {
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     if (onCommitFix) {
-      onCommitFix(currentIssue);
+      // Pass the original issue object which has the id
+      onCommitFix(issue);
     }
     
     setIsCommitting(false);
