@@ -11,9 +11,19 @@
 [![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
 [![MCP](https://img.shields.io/badge/MCP-Enabled-purple.svg)](https://modelcontextprotocol.io/)
 
-[Live Demo](#) • [Documentation](#documentation) • [Report Bug](#) • [Request Feature](#)
+[📹 Demo Video](DemoVideo/) • [📄 Documentation](PROJECT_DOCUMENTATION.md) • [🤖 Bob AI Impact](BOB_AI_IMPACT.md) • [⚙️ Setup Guide](SETUP.md)
 
 </div>
+
+---
+
+## 📚 Quick Links
+
+- **[📹 Demo Video](DemoVideo/)** - Watch Repo Rescue Room in action
+- **[📄 Project Documentation](PROJECT_DOCUMENTATION.md)** - Complete project overview for judges
+- **[🤖 Bob AI Impact](BOB_AI_IMPACT.md)** - How Bob AI powers the platform
+- **[⚙️ Setup Guide](SETUP.md)** - Installation and configuration
+- **[🛡️ Agent Guidelines](AGENTS.md)** - Development guidelines
 
 ---
 
