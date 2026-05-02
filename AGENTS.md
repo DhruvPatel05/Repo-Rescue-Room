@@ -3,14 +3,18 @@
 This file provides guidance to agents when working with code in this repository.
 
 ## Project Structure
-- Monorepo with client app in `client/` subdirectory
-- MCP server in `mcp-server/` subdirectory
-- All npm commands must be run from respective directories (`client/` or `mcp-server/`)
+- Monorepo with three main components:
+  - `client/` - React frontend application
+  - `server/` - Express backend API server
+  - `mcp-server/` - Model Context Protocol server
+- All npm commands must be run from respective directories
 
 ## Build & Development
-- Client Dev: `cd client && npm run dev`
+- Client Dev: `cd client && npm run dev` (runs on http://localhost:5173)
 - Client Build: `cd client && npm run build`
 - Client Lint: `cd client && npm run lint`
+- Backend Server: `cd server && npm start` (runs on http://localhost:3001)
+- Backend Dev: `cd server && npm run dev`
 - MCP Server: `cd mcp-server && npm start`
 - MCP Server Dev: `cd mcp-server && npm run dev`
 - No test framework configured
@@ -25,3 +29,10 @@ This file provides guidance to agents when working with code in this repository.
 - Provides tools for reading files, listing directories, and searching the project
 - See `mcp-server/README.md` for detailed documentation
 - Configuration example: `mcp-server/claude_desktop_config.example.json`
+
+## Backend API Server
+- Express server providing REST API for repository analysis
+- Three main endpoints: `/api/scan`, `/api/rescue`, `/api/fix`
+- See `server/README.md` for detailed API documentation
+- Frontend connects via `client/src/services/api.js`
+- CORS enabled for local development
