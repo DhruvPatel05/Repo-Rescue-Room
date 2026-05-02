@@ -1,5 +1,5 @@
 import express from 'express';
-import axios from 'axios';
+import { analyzeRepository, getRepositoryInfo } from '../utils/githubAnalyzer.js';
 
 const router = express.Router();
 
@@ -35,47 +35,28 @@ router.post('/', async (req, res) => {
 
     console.log(`🔍 Scanning repository: ${owner}/${repo}`);
 
-    // TODO: Implement actual GitHub API scanning logic
-    // For now, return mock data that matches the expected format
-    const mockIssues = [
-      {
-        id: 1,
-        type: 'dependency',
-        severity: 'high',
-        file: 'package.json',
-        title: 'Outdated dependency: react@17.0.0',
-        description: 'React version 17.0.0 is outdated. Current stable version is 19.0.0',
-        line: 15,
-        recommendation: 'Update to react@19.0.0'
-      },
-      {
-        id: 2,
-        type: 'security',
-        severity: 'medium',
-        file: 'src/utils/api.js',
-        title: 'Potential XSS vulnerability',
-        description: 'User input is not properly sanitized before rendering',
-        line: 42,
-        recommendation: 'Use DOMPurify or similar library to sanitize user input'
-      },
-      {
-        id: 3,
-        type: 'code-quality',
-        severity: 'medium',
-        file: 'src/components/Dashboard.jsx',
-        title: 'Missing error boundary',
-        description: 'Component lacks error handling for async operations',
-        line: 28,
-        recommendation: 'Implement error boundary or try-catch blocks'
-      }
-    ];
+    // Fetch repository info
+    let repoInfo;
+    try {
+      repoInfo = await getRepositoryInfo(owner, repo);
+      console.log(`📦 Repository: ${repoInfo.fullName} (${repoInfo.language})`);
+    } catch (error) {
+      return res.status(404).json({
+        error: 'Repository not found',
+        message: `Could not find repository: ${owner}/${repo}`
+      });
+    }
+
+    // Analyze repository for issues
+    const issues = await analyzeRepository(owner, repo);
+    console.log(`🔎 Found ${issues.length} issues`);
 
     // Calculate summary
     const summary = {
-      critical: mockIssues.filter(i => i.severity === 'critical').length,
-      high: mockIssues.filter(i => i.severity === 'high').length,
-      medium: mockIssues.filter(i => i.severity === 'medium').length,
-      low: mockIssues.filter(i => i.severity === 'low').length
+      critical: issues.filter(i => i.severity === 'critical').length,
+      high: issues.filter(i => i.severity === 'high').length,
+      medium: issues.filter(i => i.severity === 'medium').length,
+      low: issues.filter(i => i.severity === 'low').length
     };
 
     // Calculate health score (100 - weighted issues)
@@ -89,12 +70,13 @@ router.post('/', async (req, res) => {
     const response = {
       healthScore,
       summary,
-      totalIssues: mockIssues.length,
-      issues: mockIssues,
+      totalIssues: issues.length,
+      issues,
       repository: {
         owner,
         name: repo,
-        url
+        url,
+        ...repoInfo
       },
       scannedAt: new Date().toISOString()
     };
