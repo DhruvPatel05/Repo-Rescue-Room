@@ -372,8 +372,8 @@ Built with ❤️ by passionate developers who believe in making code maintenanc
 
 **Team Members:**
 - **Dhruv Patel** - [GitHub](https://github.com/DhruvPatel05)
-- **Athrava Mahangade**
-- **Karina Purswani**
+- **Athrava Mahangade** - [GitHub](https://github.com/atharavmahangade-spec)
+- **Karina Purswani** - [GitHub](https://github.com/karina-purswani)
 
 ---
 
