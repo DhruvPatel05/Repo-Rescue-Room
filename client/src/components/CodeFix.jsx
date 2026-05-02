@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './CodeFix.css';
 
-function CodeFix({ issue, onApplyFix, onClose }) {
+function CodeFix({ issue, onApplyFix, onClose, onCommitFix }) {
   const [isApplying, setIsApplying] = useState(false);
+  const [isCommitting, setIsCommitting] = useState(false);
   
   if (!issue || !issue.fix) {
     return null;
@@ -33,6 +34,19 @@ function CodeFix({ issue, onApplyFix, onClose }) {
     }
     
     setIsApplying(false);
+  };
+  
+  const handleCommitFix = async () => {
+    setIsCommitting(true);
+    
+    // Simulate committing fix
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    if (onCommitFix) {
+      onCommitFix(currentIssue);
+    }
+    
+    setIsCommitting(false);
   };
   
   const brokenLines = currentIssue.brokenCode.split('\n');
@@ -128,25 +142,47 @@ function CodeFix({ issue, onApplyFix, onClose }) {
           <p>{currentIssue.fixExplanation}</p>
         </div>
         
-        <button 
-          className={`apply-fix-button ${isApplying ? 'applying' : ''}`}
-          onClick={handleApplyFix}
-          disabled={isApplying}
-        >
-          {isApplying ? (
-            <>
-              <span className="spinner"></span>
-              Applying Fix...
-            </>
-          ) : (
-            <>
-              <svg className="icon" role="presentation" aria-hidden="true">
-                <use href="/icons.svg#check-icon"></use>
-              </svg>
-              Apply Fix
-            </>
-          )}
-        </button>
+        <div className="action-buttons">
+          <button
+            className={`apply-fix-button ${isApplying ? 'applying' : ''}`}
+            onClick={handleApplyFix}
+            disabled={isApplying || isCommitting}
+          >
+            {isApplying ? (
+              <>
+                <span className="spinner"></span>
+                Applying Fix...
+              </>
+            ) : (
+              <>
+                <svg className="icon" role="presentation" aria-hidden="true">
+                  <use href="/icons.svg#check-icon"></use>
+                </svg>
+                Apply Fix
+              </>
+            )}
+          </button>
+          
+          <button
+            className={`commit-fix-button ${isCommitting ? 'committing' : ''}`}
+            onClick={handleCommitFix}
+            disabled={isApplying || isCommitting}
+          >
+            {isCommitting ? (
+              <>
+                <span className="spinner"></span>
+                Committing...
+              </>
+            ) : (
+              <>
+                <svg className="icon" role="presentation" aria-hidden="true">
+                  <use href="/icons.svg#github-icon"></use>
+                </svg>
+                Commit Fix
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

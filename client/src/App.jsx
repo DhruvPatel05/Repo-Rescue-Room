@@ -71,6 +71,19 @@ function App() {
     });
   };
   
+  const handleCommitFix = (issue) => {
+    // Close the code fix panel
+    setSelectedIssue(null);
+    // Update health score
+    setHealthScore(prev => Math.min(100, prev + 5));
+    
+    // Show commit success toast
+    setToast({
+      message: `🚀 Successfully committed fix: ${issue.title || issue.type}`,
+      type: 'success'
+    });
+  };
+  
   const handleCloseCodeFix = () => {
     setSelectedIssue(null);
   };
@@ -237,9 +250,10 @@ function App() {
             
             {selectedIssue && (
               <section className="codefix-section">
-                <CodeFix 
+                <CodeFix
                   issue={selectedIssue}
                   onApplyFix={handleApplyFix}
+                  onCommitFix={handleCommitFix}
                   onClose={handleCloseCodeFix}
                 />
               </section>
