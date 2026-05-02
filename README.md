@@ -369,6 +369,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 Built with ❤️ by passionate developers who believe in making code maintenance effortless.
 
 - **Dhruv Patel** - [GitHub](https://github.com/DhruvPatel05)
+- **Athrava Mahangade**
+- **Karina Purswani**
 
 ---
 
