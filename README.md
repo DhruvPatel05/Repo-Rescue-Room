@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Repo Rescue Room](client/src/assets/hero.png)
+![Repo Rescue Room](docs/screenshots/hero.png)
 
 **AI-Powered Repository Health Analysis & Automated Code Fixes**
 
@@ -198,17 +198,27 @@ Ask questions like:
 
 <div align="center">
 
-### Dashboard
+### 📊 Dashboard - Real-time Health Analysis
 ![Dashboard](docs/screenshots/dashboard.png)
+*Monitor repository health with instant issue detection and severity breakdown*
 
-### Rescue Plan
+---
+
+### 🎯 Rescue Plan - Prioritized Fix Strategy
 ![Rescue Plan](docs/screenshots/rescue-plan.png)
+*Get a prioritized list of issues with estimated fix times and detailed explanations*
 
-### Code Fixes
-![Code Fixes](docs/screenshots/code-fixes.png)
+---
 
-### AI Chat
-![AI Chat](docs/screenshots/ai-chat.png)
+### 🔧 Code Fixes - AI-Generated Solutions
+![Code Fixes](docs/screenshots/code-fix.png)
+*View side-by-side code comparisons with Bob's intelligent fix suggestions*
+
+---
+
+### 💬 Bob Assistant - Your AI Coding Partner
+![Bob Chat](docs/screenshots/bob-chat.png)
+*Ask Bob anything about your repository - get instant, context-aware answers*
 
 </div>
 
@@ -362,8 +372,29 @@ Built with ❤️ by passionate developers who believe in making code maintenanc
 
 ---
 
+## 🤖 Development with Bob
+
+This project was developed with the assistance of **Bob**, an AI-powered coding assistant that helped accelerate development and ensure code quality.
+
+### Bob's Contributions:
+- 🏗️ **Architecture Design**: Helped design the monorepo structure and component architecture
+- 💻 **Code Implementation**: Assisted in writing React components, Express routes, and MCP server integration
+- 🎨 **UI/UX Development**: Contributed to CSS styling with native nesting and responsive design
+- 🐛 **Debugging & Optimization**: Helped identify and fix issues throughout development
+- 📝 **Documentation**: Assisted in creating comprehensive documentation and setup guides
+
+### Development Statistics:
+- **Total Bob Sessions**: Multiple collaborative coding sessions
+- **Token Usage**: Efficient use of AI assistance for rapid development
+- **Code Quality**: Maintained high standards with Bob's code review suggestions
+
+See the `bob_sessions/` directory for session screenshots and usage statistics.
+
+---
+
 ## 🙏 Acknowledgments
 
+- **Bob AI Assistant** for accelerating development and code quality
 - GitHub API for repository access
 - Anthropic Claude for AI capabilities
 - Model Context Protocol community

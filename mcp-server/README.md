@@ -2,6 +2,8 @@
 
 Model Context Protocol (MCP) server for the Repo Rescue Room project. This server provides tools for AI assistants to interact with the project files and structure.
 
+> **Development Note**: This MCP server was developed with the assistance of **Bob**, an AI coding assistant. Bob helped implement the MCP protocol integration and tool definitions.
+
 ## Features
 
 The MCP server provides the following tools:
