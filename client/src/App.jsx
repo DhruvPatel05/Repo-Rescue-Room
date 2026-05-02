@@ -3,6 +3,7 @@ import RescueDashboard from './components/RescueDashboard';
 import RescuePlan from './components/RescuePlan';
 import CodeFix from './components/CodeFix';
 import BobChat from './components/BobChat';
+import Toast from './components/Toast';
 import { scanRepository, createRescuePlan, generateFix } from './services/api';
 import './App.css';
 
@@ -15,6 +16,7 @@ function App() {
   const [scanData, setScanData] = useState(null);
   const [rescuePlan, setRescuePlan] = useState(null);
   const [error, setError] = useState(null);
+  const [toast, setToast] = useState(null);
   
   const handleScan = async (e) => {
     e.preventDefault();
@@ -61,6 +63,12 @@ function App() {
     setSelectedIssue(null);
     // Update health score
     setHealthScore(prev => Math.min(100, prev + 5));
+    
+    // Show success toast
+    setToast({
+      message: `✨ Successfully fixed: ${issue.title || issue.type}`,
+      type: 'success'
+    });
   };
   
   const handleCloseCodeFix = () => {
@@ -240,6 +248,15 @@ function App() {
         </div>
       )}
       
+      
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+          duration={4000}
+        />
+      )}
       <BobChat />
     </div>
   );
