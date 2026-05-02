@@ -405,16 +405,6 @@ See the `bob_sessions/` directory for session screenshots and usage statistics.
 - Model Context Protocol community
 - React and Vite teams for amazing tools
 - All open-source contributors
-
----
-
-## 📞 Contact & Support
-
-- 📧 Email: support@reporescueroom.com
-- 💬 Discord: [Join our community](#)
-- 🐦 Twitter: [@RepoRescueRoom](#)
-- 📝 Blog: [blog.reporescueroom.com](#)
-
 ---
 
 <div align="center">
