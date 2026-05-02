@@ -3,6 +3,7 @@ import RescueDashboard from './components/RescueDashboard';
 import RescuePlan from './components/RescuePlan';
 import CodeFix from './components/CodeFix';
 import BobChat from './components/BobChat';
+import { scanRepository, createRescuePlan, generateFix } from './services/api';
 import './App.css';
 
 function App() {
@@ -10,23 +11,49 @@ function App() {
   const [isScanning, setIsScanning] = useState(false);
   const [hasScanned, setHasScanned] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState(null);
-  const [healthScore, setHealthScore] = useState(45);
+  const [healthScore, setHealthScore] = useState(0);
+  const [scanData, setScanData] = useState(null);
+  const [rescuePlan, setRescuePlan] = useState(null);
+  const [error, setError] = useState(null);
   
-  const handleScan = (e) => {
+  const handleScan = async (e) => {
     e.preventDefault();
     if (!repoUrl.trim()) return;
     
     setIsScanning(true);
+    setError(null);
     
-    // Simulate scanning
-    setTimeout(() => {
-      setIsScanning(false);
+    try {
+      // Call the backend API to scan the repository
+      const data = await scanRepository(repoUrl);
+      
+      setScanData(data);
+      setHealthScore(data.healthScore);
+      
+      // Automatically create rescue plan from issues
+      if (data.issues && data.issues.length > 0) {
+        const plan = await createRescuePlan(data.issues);
+        setRescuePlan(plan);
+      }
+      
       setHasScanned(true);
-    }, 2500);
+    } catch (err) {
+      setError(err.message || 'Failed to scan repository');
+      console.error('Scan error:', err);
+    } finally {
+      setIsScanning(false);
+    }
   };
   
-  const handleFixIssue = (issue) => {
-    setSelectedIssue(issue);
+  const handleFixIssue = async (issue) => {
+    try {
+      // Generate fix from backend
+      const fixData = await generateFix(issue);
+      setSelectedIssue({ ...issue, fix: fixData[0] });
+    } catch (err) {
+      console.error('Fix generation error:', err);
+      setError('Failed to generate fix');
+    }
   };
   
   const handleApplyFix = (issue) => {
@@ -62,6 +89,20 @@ function App() {
               </p>
               
               <form className="url-input-form" onSubmit={handleScan}>
+                {error && (
+                  <div className="error-message" style={{
+                    padding: '12px',
+                    marginBottom: '16px',
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    borderRadius: '8px',
+                    color: '#ef4444',
+                    fontSize: '14px'
+                  }}>
+                    {error}
+                  </div>
+                )}
+                
                 <div className="input-wrapper">
                   <svg className="input-icon" role="presentation" aria-hidden="true">
                     <use href="/icons.svg#github-icon"></use>
@@ -69,7 +110,7 @@ function App() {
                   <input
                     type="text"
                     className="url-input"
-                    placeholder="Enter repository URL (e.g., https://github.com/user/repo)"
+                    placeholder="Enter repository URL (e.g., https://github.com/facebook/react)"
                     value={repoUrl}
                     onChange={(e) => setRepoUrl(e.target.value)}
                     disabled={isScanning}
@@ -168,19 +209,22 @@ function App() {
           
           <main className="app-main">
             <section className="dashboard-section">
-              <RescueDashboard 
+              <RescueDashboard
                 healthScore={healthScore}
-                issues={{
-                  critical: 3,
-                  high: 7,
-                  medium: 12,
-                  low: 8,
+                issues={scanData?.summary || {
+                  critical: 0,
+                  high: 0,
+                  medium: 0,
+                  low: 0,
                 }}
               />
             </section>
             
             <section className="plan-section">
-              <RescuePlan onFixIssue={handleFixIssue} />
+              <RescuePlan
+                rescuePlan={rescuePlan}
+                onFixIssue={handleFixIssue}
+              />
             </section>
             
             {selectedIssue && (

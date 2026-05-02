@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import './RescuePlan.css';
 
-function RescuePlan({ issues = [], onFixIssue }) {
+function RescuePlan({ rescuePlan = [], onFixIssue }) {
   const [filter, setFilter] = useState('all');
   
-  // Sample issues if none provided
+  // Sample issues if none provided (for development)
   const defaultIssues = [
     {
       id: 1,
@@ -80,7 +80,7 @@ function RescuePlan({ issues = [], onFixIssue }) {
     },
   ];
   
-  const issueList = issues.length > 0 ? issues : defaultIssues;
+  const issueList = rescuePlan && rescuePlan.length > 0 ? rescuePlan : defaultIssues;
   
   // Filter issues
   const filteredIssues = issueList.filter(issue => {
@@ -214,7 +214,25 @@ function RescuePlan({ issues = [], onFixIssue }) {
                   {issue.file}
                 </div>
                 
-                <p className="issue-description">{issue.description}</p>
+                <p className="issue-description">
+                  {issue.explanation || issue.description}
+                </p>
+                
+                {issue.estimatedTime && (
+                  <div className="issue-time" style={{
+                    marginTop: '8px',
+                    fontSize: '13px',
+                    color: 'var(--text-secondary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}>
+                    <svg className="icon" role="presentation" aria-hidden="true" style={{ width: '14px', height: '14px' }}>
+                      <use href="/icons.svg#activity-icon"></use>
+                    </svg>
+                    Estimated time: {issue.estimatedTime}
+                  </div>
+                )}
               </div>
               
               <div className="issue-actions">
