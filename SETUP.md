@@ -2,6 +2,8 @@
 
 This guide will help you set up and run the complete Repo Rescue Room application with frontend, backend, and MCP server.
 
+> **Note**: This project was developed with the assistance of **Bob**, an AI-powered coding assistant. See the `bob_sessions/` directory for development session screenshots and usage statistics.
+
 ## Prerequisites
 
 - Node.js 18+ installed

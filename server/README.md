@@ -2,6 +2,8 @@
 
 Backend API server for Repo Rescue Room that performs repository scanning, issue analysis, rescue planning, and code fix generation.
 
+> **Development Note**: This backend was developed with the assistance of **Bob**, an AI coding assistant. Bob helped design the API architecture, implement route handlers, and ensure code quality.
+
 ## Architecture
 
 ```

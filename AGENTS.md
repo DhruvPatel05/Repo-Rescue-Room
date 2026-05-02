@@ -2,6 +2,8 @@
 
 This file provides guidance to agents when working with code in this repository.
 
+> **Development Note**: This project was built with the assistance of **Bob**, an AI coding assistant. Bob helped with architecture design, code implementation, debugging, and documentation. See `bob_sessions/` for session history.
+
 ## Project Structure
 - Monorepo with three main components:
   - `client/` - React frontend application
